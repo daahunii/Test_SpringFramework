@@ -1,23 +1,14 @@
-package com.example;
+package com.example.board;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.example.BoardVO;
-import com.example.JDBCUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 public class BoardDAO {
-	
-//	Connection conn = null;
-//	PreparedStatement stmt = null;
-//	ResultSet rs = null;
 
 	private JdbcTemplate template;
 	private final String BOARD_INSERT = "insert into BOARD (title, writer, content) values (?,?,?)";
@@ -39,7 +30,7 @@ public class BoardDAO {
 		return template.update(BOARD_DELETE, new Object[]{id});
 	}
 	public int updateBoard(BoardVO vo) {
-		return template.update(BOARD_UPDATE, new Object[]{vo.getContent(), vo.getWriter(), vo.getContent(), vo.getSeq()});
+		return template.update(BOARD_UPDATE, new Object[]{vo.getTitle(), vo.getWriter(), vo.getContent(), vo.getSeq()});
 	}
 	
 	public BoardVO getBoard(int seq) {
@@ -53,6 +44,7 @@ public class BoardDAO {
 				BoardVO data = new BoardVO();
 				data.setSeq(rs.getInt("seq"));
 				data.setTitle(rs.getString("title"));
+				data.setContent(rs.getString("content"));
 				data.setRegdate(rs.getDate("regdate"));
 				data.setWriter(rs.getString("writer"));
 				return data;
